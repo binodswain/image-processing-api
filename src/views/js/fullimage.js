@@ -3,7 +3,7 @@ const wrapper = document.getElementById("fullimage-wrapper");
 const fetchFullsizeUrls = async () => {
     const response = await fetch("/api/images");
     const json = await response.json();
-    console.log(json);
+
     if (json.length > 0) {
         renderFullsize(json);
     } else {

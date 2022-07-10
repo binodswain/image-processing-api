@@ -15,7 +15,6 @@ const thumbnailImagePath = path.resolve(__dirname, '../../assets/images/thumb');
 const getImageName = async (params: ImageQuery): Promise<string> => {
     const { width = 'auto', height = 'auto', filename } = params;
     const map = await getThumbnailMap()
-    console.log(map);
     return map[`${filename}-${height}x${width}`]
 }
 
