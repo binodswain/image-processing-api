@@ -1,0 +1,51 @@
+@use './global' as *;
+
+.home {
+    display: flex;
+    flex-direction: column;
+    .header {
+        background-color: black;
+        color: white;
+        // text-align: center;
+        padding: 3rem 0;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .endpoint-details {
+        margin: 2rem 0;
+
+        ul {
+            margin-top: 1rem;
+            margin-left: 1rem;
+
+            li {
+                margin-bottom: 1rem;
+                
+                .endpoint-sedcription {
+                    margin-left: 2rem;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
+    .main {
+        flex: 1;
+    }
+
+    .footer {
+        background-color: black;
+        min-height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+

@@ -1,0 +1,119 @@
+@use './global' as *;
+
+.header {
+    background-color: black;
+    color: white;
+    // text-align: center;
+    padding: 3rem 0;
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+}
+.upload-wrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.upload-form {
+    flex: 1;
+    margin: 1rem 0;
+    font-size: 20px;
+
+    .input-file {
+        display: block;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .submit {
+        padding: 10px;
+        border-radius: 5px;
+        background-color: rgba(15,63,218,.961);
+        color: #ccc;
+        width: 100%;
+        border: none;
+
+    }
+
+    .reset {
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #b91818f5;
+        color: #ccc;
+        width: 100%;
+        border: none;
+    }
+
+    .button-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1rem;
+    }
+}
+
+.preview {
+    flex: 1;
+    // border: 1px dotted #ccc;
+    border-radius: 5px;
+    font-size: 20px;
+    min-height: 100%;
+    width: 100%;
+
+    .preview-img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.message {
+    flex: 1;
+    border: 1px solid ;
+    border-radius: 5px;
+    font-size: 20px;
+    min-height: 100%;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    position: relative;
+
+    &.success {
+        background-color: rgba(15,63,218,.961);
+        border-color: rgba(15,63,218,.961);
+        color: #ccc;
+    }
+    &.error {
+        background-color: #b91818f5;
+        border-color: #b91818f5;
+        color: #ccc;
+    }
+    // text-align: center;
+}
+
+.close-btn {
+    color: #ccc;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    font-size: 23px;
+}
