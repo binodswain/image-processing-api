@@ -12,7 +12,11 @@ const thumbnailImagePath = path.resolve(__dirname, "../../assets/images/thumb");
  * @param params object of filename, width, height
  * @returns thumbnail filename with extension
  */
-const getImageName = async (params: ImageQuery): Promise<string> => {
+export const getImageName = async (params: {
+    filename: string;
+    width?: number;
+    height?: number;
+}): Promise<string> => {
     const { width = "auto", height = "auto", filename } = params;
     const map = await getThumbnailMap();
     return map[`${filename}-${height}x${width}`];
@@ -25,8 +29,8 @@ const getImageName = async (params: ImageQuery): Promise<string> => {
  */
 const createThumbnailName = (params: {
     filename: string;
-    width: number | "";
-    height: number | "";
+    width?: number;
+    height?: number;
     ext: string;
 }): string => {
     const { width = "auto", height = "auto", filename, ext } = params;

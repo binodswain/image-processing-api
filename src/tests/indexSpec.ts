@@ -1,6 +1,10 @@
 import supertest from "supertest";
 
-import { doesThumbnailExist, getImageList } from "../helpers/storage";
+import {
+    doesThumbnailExist,
+    getImageList,
+    getImageName as getThumbnailFilename
+} from "../helpers/storage";
 import { clearThumbnailFolder } from "./helpers/cleanup";
 import app from "../index";
 
@@ -24,7 +28,12 @@ describe("Endpoint testing", () => {
             "/api/images?filename=palmtunnel&height=700&width=800"
         );
         expect(response.status).toBe(200);
-        const output = await doesThumbnailExist(`palmtunnel-700x800.jpg`);
+        const thumbnail = await getThumbnailFilename({
+            filename: "palmtunnel",
+            width: 800,
+            height: 700
+        });
+        const output = await doesThumbnailExist(thumbnail);
         expect(output).toBe(true);
     });
 
@@ -33,7 +42,12 @@ describe("Endpoint testing", () => {
             "/api/images?filename=invalid&height=700&width=800"
         );
         expect(response.status).toBe(400);
-        const output = await doesThumbnailExist(`invalid-700x800.jpg`);
+        const thumbnail = await getThumbnailFilename({
+            filename: "invalid",
+            width: 800,
+            height: 700
+        });
+        const output = await doesThumbnailExist(thumbnail);
         expect(output).toBe(false);
     });
 
@@ -42,7 +56,11 @@ describe("Endpoint testing", () => {
             "/api/images?filename=palmtunnel&height=700"
         );
         expect(response.status).toBe(200);
-        const output = await doesThumbnailExist(`palmtunnel-700xauto.jpg`);
+        const thumbnail = await getThumbnailFilename({
+            filename: "palmtunnel",
+            height: 700
+        });
+        const output = await doesThumbnailExist(thumbnail);
         expect(output).toBe(true);
     });
 
@@ -51,7 +69,12 @@ describe("Endpoint testing", () => {
             "/api/images?filename=palmtunnel&width=800"
         );
         expect(response.status).toBe(200);
-        const output = await doesThumbnailExist(`palmtunnel-autox800.jpg`);
+
+        const thumbnail = await getThumbnailFilename({
+            filename: "palmtunnel",
+            width: 800
+        });
+        const output = await doesThumbnailExist(thumbnail);
         expect(output).toBe(true);
     });
 

@@ -13,14 +13,14 @@ import {
 const routes = express.Router();
 
 export interface ImageQuery {
-    width: number | "";
-    height: number | "";
+    width?: number;
+    height?: number;
     filename: string;
 }
 
 export interface ImageReqQuery {
-    width: string;
-    height: string;
+    width?: string;
+    height?: string;
     filename: string;
 }
 
@@ -63,7 +63,7 @@ routes.get(
                 width: query.width && parseInt(query.width),
                 height: query.height && parseInt(query.height),
                 filename: query.filename
-            };
+            } as ImageQuery;
 
             const image = await getThumbnail(queryData);
 

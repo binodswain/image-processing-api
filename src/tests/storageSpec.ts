@@ -2,7 +2,8 @@ import {
     doesFileExist,
     getThumbnail,
     createThumbnail,
-    doesThumbnailExist
+    doesThumbnailExist,
+    getImageName as getThumbnailFilename
 } from "../helpers/storage";
 import { clearThumbnailFolder } from "./helpers/cleanup";
 
@@ -35,7 +36,8 @@ describe("Test storage utility functions", () => {
             height: 100
         };
         await createThumbnail(queryData);
-        const output = await doesThumbnailExist(`fjord-100x100.jpg`);
+        const thumbnail = await getThumbnailFilename(queryData);
+        const output = await doesThumbnailExist(thumbnail);
         expect(output).toBe(true);
     });
 

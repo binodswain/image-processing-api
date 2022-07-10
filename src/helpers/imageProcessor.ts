@@ -1,8 +1,8 @@
 import sharp from "sharp";
 
 interface ImageResizeType {
-    width: number | "";
-    height: number | "";
+    width?: number;
+    height?: number;
     filepath: string;
 }
 
