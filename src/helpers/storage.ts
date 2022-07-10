@@ -7,9 +7,31 @@ import { processImage } from "./imageProcessor";
 const originalImagePath = path.resolve(__dirname, '../../assets/images/full');
 const thumbnailImagePath = path.resolve(__dirname, '../../assets/images/thumb');
 
-const getImageName = (params: ImageQuery) => {
+/**
+ * @description helper function to get thumbnail filename with extension
+ * @param params object of filename, width, height
+ * @returns thumbnail filename with extension
+ */
+const getImageName = async (params: ImageQuery): Promise<string> => {
     const { width = 'auto', height = 'auto', filename } = params;
-    return `${filename}-${height}x${width}.jpg`
+    const map = await getThumbnailMap()
+    console.log(map);
+    return map[`${filename}-${height}x${width}`]
+}
+
+/**
+ * @description helper function to generate thumbnail filename with resize args
+ * @param params object of filename, width, height, extension
+ * @returns thumbnail filename with extension
+ */
+const createThumbnailName = (params: {
+    filename: string,
+    width: number | '',
+    height: number | '',
+    ext: string
+}): string => {
+    const { width = 'auto', height = 'auto', filename, ext } = params;
+    return `${filename}-${height}x${width}.${ext}`;
 }
 
 /**
@@ -19,7 +41,7 @@ const getImageName = (params: ImageQuery) => {
  */
 export const getThumbnail = async (params: ImageQuery): Promise<Buffer | null> => {
     try {
-        const imageName = getImageName(params);
+        const imageName = await getImageName(params);
         const thumbnailPath = path.resolve(thumbnailImagePath, imageName);
         const image = await fs.readFile(thumbnailPath);
         return image;
@@ -30,12 +52,13 @@ export const getThumbnail = async (params: ImageQuery): Promise<Buffer | null> =
 
 /**
  * @description helper function to get image buffer from original folder
- * @param filename 
+ * @param filename filename of image without extension
  * @returns image buffer
  */
 export const getFullImage = async (filename: string): Promise<Buffer | null> => {
     try {
-        const imagePath = path.resolve(originalImagePath, filename);
+        const filenameMap = await getFilenameMap();
+        const imagePath = path.resolve(originalImagePath, filenameMap[filename]);
         const image = await fs.readFile(imagePath);
         return image;
     } catch (error) {
@@ -50,15 +73,17 @@ export const getFullImage = async (filename: string): Promise<Buffer | null> => 
  * @returns image buffer
  */
 export const createThumbnail = async (params: ImageQuery): Promise<Buffer | Error> => {
-    const imageName = getImageName(params);
-    const originalPath = path.resolve(originalImagePath, `${params.filename}.jpg`);
-    const thumbnailPath = path.resolve(thumbnailImagePath, imageName);
+    const filenameMap = await getFilenameMap();
+    const originalPath = path.resolve(originalImagePath, filenameMap[params.filename]);
     // get sharp image buffer
-    const imageBuffer = await processImage({
+    const { imageBuffer, ext } = await processImage({
         width: params.width,
         height: params.height,
         filepath: originalPath,
     })
+
+    const imageName = await createThumbnailName({ ...params, ext });
+    const thumbnailPath = path.resolve(thumbnailImagePath, imageName);
 
     // save resized image
     await saveThumbnail({ imageBuffer, imageName: thumbnailPath });
@@ -86,7 +111,8 @@ const saveThumbnail = async (params: {
  */
 export const doesFileExist = async (filename: string): Promise<boolean> => {
     try {
-        const filePath = path.resolve(originalImagePath, `${filename}.jpg`);
+        const filenameMap = await getFilenameMap();
+        const filePath = path.resolve(originalImagePath, filenameMap[filename]);
         const stats = await fs.stat(filePath);
         return stats.isFile();
     } catch (error) {
@@ -142,12 +168,51 @@ export const getThumbnailList = async (): Promise<Array<{
         }
         return true;
     }).map(file => {
-        const [filename, height_width] = file.split('.')[0].split('-');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [_, ...rest] = file.split('.').reverse();
+        const temp = rest.reverse().join('.');
+        const [filename, height_width] = temp.split('-');
         const [height, width] = height_width.split('x');
         return {
-            filename: file, url: `/api/images?filename=${filename}&height=${height}&width=${width}`, meta: {
+            filename: file,
+            url: `/api/images?filename=${filename}&height=${height}&width=${width}`,
+            meta: {
                 filename, height, width
             }
         }
     });
+}
+
+/**
+ * @description helper function to create js map of filename and original filename
+ * @returns map of filename and original filename with extension
+ */
+async function getFilenameMap(): Promise<{ [key: string]: string }> {
+    const filelist = await fs.readdir(originalImagePath);
+
+    const filenameMap = filelist.reduce((acc: {
+        [key: string]: string
+    }, file: string) => {
+        const [ext] = file.split('.').reverse();
+        const filename = file.split(`.${ext}`)[0];
+        acc[filename] = file;
+        return acc;
+    }, {})
+
+    return filenameMap;
+}
+
+/**
+ * @description helper function to get image map of thumb and thumbnail-with extension
+ * @returns map of filename and thumbnail filename with extension
+ */
+async function getThumbnailMap(): Promise<{ [key: string]: string }> {
+    const filelist = await getThumbnailList();
+    const filenameMap = filelist.reduce((acc: {
+        [key: string]: string
+    }, file: { filename: string; meta: { filename: string; height: string; width: string } }) => {
+        acc[`${file.meta.filename}-${file.meta.height}x${file.meta.width}`] = file.filename;
+        return acc;
+    }, {})
+    return filenameMap;
 }

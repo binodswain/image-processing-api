@@ -39,7 +39,7 @@ routes.get('/images', validateQueryParam, validateQueryFilename, async (req: exp
         // handle request without any resize param
         if (!query.height && !query.width) {
             // return full size image
-            const image = await getFullImage(`${query.filename}.jpg`);
+            const image = await getFullImage(query.filename);
             res.setHeader('Content-Type', 'image/jpeg');
             return res.status(200).send(image);
         }

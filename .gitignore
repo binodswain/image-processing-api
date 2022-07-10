@@ -37,4 +37,4 @@ node_modules/
 .parcel-cache
 
 dist/
-assets/images/thumb/*.jpg
+assets/images/thumb/*.*

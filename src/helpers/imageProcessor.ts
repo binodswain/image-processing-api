@@ -11,11 +11,18 @@ interface ImageResizeType {
  * @param params - object of image resize params
  * @returns image buffer
  */
-export const processImage = async (params: ImageResizeType): Promise<Buffer> => {
+export const processImage = async (params: ImageResizeType): Promise<{ imageBuffer: Buffer, ext: string }> => {
     const { width, height, filepath } = params;
-    const image = await sharp(filepath)
+    // create sharpp instance
+    const sharpInstance = await sharp(filepath);
+
+    // get image format from metadata
+    const metadata = await sharpInstance.metadata();
+    const format = metadata.format;
+
+    const image = await sharpInstance
         .resize(width || null, height || null)
-        .jpeg()
+        .toFormat(format || 'jpeg')
         .toBuffer();
-    return image;
+    return { imageBuffer: image, ext: format || 'jpeg' };
 }
