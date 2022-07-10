@@ -1,8 +1,8 @@
-import sharp from 'sharp';
+import sharp from "sharp";
 
 interface ImageResizeType {
-    width: number | '';
-    height: number | '';
+    width: number | "";
+    height: number | "";
     filepath: string;
 }
 
@@ -11,7 +11,9 @@ interface ImageResizeType {
  * @param params - object of image resize params
  * @returns image buffer
  */
-export const processImage = async (params: ImageResizeType): Promise<{ imageBuffer: Buffer, ext: string }> => {
+export const processImage = async (
+    params: ImageResizeType
+): Promise<{ imageBuffer: Buffer; ext: string }> => {
     const { width, height, filepath } = params;
     // create sharpp instance
     const sharpInstance = await sharp(filepath);
@@ -22,7 +24,7 @@ export const processImage = async (params: ImageResizeType): Promise<{ imageBuff
 
     const image = await sharpInstance
         .resize(width || null, height || null)
-        .toFormat(format || 'jpeg')
+        .toFormat(format || "jpeg")
         .toBuffer();
-    return { imageBuffer: image, ext: format || 'jpeg' };
-}
+    return { imageBuffer: image, ext: format || "jpeg" };
+};

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from "express";
 
 /**
  * @description globalErrorHandler for express app
@@ -8,13 +8,18 @@ import { NextFunction, Request, Response } from 'express'
  * @param next express next function
  * @returns void
  */
-export const errorHandler = (err: {
-    stack: Array<string>
-}, req: Request, res: Response, next: NextFunction): void => {
+export const errorHandler = (
+    err: {
+        stack: Array<string>;
+    },
+    req: Request,
+    res: Response,
+    next: NextFunction
+): void => {
     if (res.headersSent) {
-        return next(err)
+        return next(err);
     }
 
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
-}
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
+};

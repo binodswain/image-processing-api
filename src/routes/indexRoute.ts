@@ -1,8 +1,8 @@
-import express from 'express';
-import path from 'path';
+import express from "express";
+import path from "path";
 const routes = express.Router();
 
-const viewDirectory = path.resolve(__dirname, '../views/');
+const viewDirectory = path.resolve(__dirname, "../views/");
 
 /**
  * @description GET endpoint to get index page
@@ -11,8 +11,8 @@ const viewDirectory = path.resolve(__dirname, '../views/');
  * @returns express.Response
  * @throws Error
  */
-routes.get('/', (req: express.Request, res: express.Response): void => {
-    res.sendFile('home.html', { root: viewDirectory });
+routes.get("/", (req: express.Request, res: express.Response): void => {
+    res.sendFile("home.html", { root: viewDirectory });
 });
 
 /**
@@ -22,8 +22,8 @@ routes.get('/', (req: express.Request, res: express.Response): void => {
  * @returns express.Response
  * @throws Error
  */
-routes.get('/upload', (req: express.Request, res: express.Response): void => {
-    res.sendFile('upload.html', { root: viewDirectory });
+routes.get("/upload", (req: express.Request, res: express.Response): void => {
+    res.sendFile("upload.html", { root: viewDirectory });
 });
 
 /**
@@ -33,9 +33,12 @@ routes.get('/upload', (req: express.Request, res: express.Response): void => {
  * @returns express.Response
  * @throws Error
  */
-routes.get('/thumbnails', (req: express.Request, res: express.Response): void => {
-    res.sendFile('thumbnails.html', { root: viewDirectory });
-});
+routes.get(
+    "/thumbnails",
+    (req: express.Request, res: express.Response): void => {
+        res.sendFile("thumbnails.html", { root: viewDirectory });
+    }
+);
 
 /**
  * @description GET endpoint to render fullsize image UI
@@ -44,8 +47,11 @@ routes.get('/thumbnails', (req: express.Request, res: express.Response): void =>
  * @returns express.Response
  * @throws Error
  */
-routes.get('/fullimages', (req: express.Request, res: express.Response): void => {
-    res.sendFile('fullimages.html', { root: viewDirectory });
-});
+routes.get(
+    "/fullimages",
+    (req: express.Request, res: express.Response): void => {
+        res.sendFile("fullimages.html", { root: viewDirectory });
+    }
+);
 
 export default routes;

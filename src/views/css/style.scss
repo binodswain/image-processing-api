@@ -1,4 +1,4 @@
-@use './global' as *;
+@use "./global" as *;
 
 .home {
     display: flex;
@@ -25,7 +25,7 @@
 
             li {
                 margin-bottom: 1rem;
-                
+
                 .endpoint-sedcription {
                     margin-left: 2rem;
                     margin-top: 10px;
@@ -46,6 +46,3 @@
         align-items: center;
     }
 }
-
-
-

@@ -20,7 +20,7 @@
 -   `npm run test`: to build the api codebase and run jasmine specs
 -   `npm run start`: to start the API server in development mode with nodemon
 -   `npm run lint`: to lint the API codebase
--   `npm run prettify`: to prettify the codebase
+-   `npm run format`: to prettify the codebase
 -   `npm run cleanup`: to remove dist folder and any existing thumbnails
 -   `npm run start:fe`: to start parcel cli to process UI code present in src/views
 -   `npm run build:fe`: to generate processed output of UI code in dist/views

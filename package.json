@@ -11,7 +11,7 @@
         "test": "npm run build && npm run jasmine",
         "start": "nodemon src/index.ts",
         "lint": "eslint . --ext .ts",
-        "prettify": "prettier --config .prettierrc 'src' --write",
+        "format": "prettier --config .prettierrc \"src\" --write",
         "cleanup": "npx rimraf dist && npx rimraf assets/images/thumb/*.*",
         "start:fe": "parcel",
         "build:fe": "parcel build"
